@@ -1,0 +1,210 @@
+#include <stdio.h>
+#include <math.h>
+
+#define MAX_HISTORY 10
+
+// Function prototypes
+void showMenu();
+void showHistory(char history[][100], int count);
+
+int main() {
+    int choice;
+    double num1, num2, result;
+    int remainder;
+    
+    char history[MAX_HISTORY][100];
+    int historyCount = 0;
+
+    printf("=================================\n");
+    printf("       MINI SMART CALCULATOR\n");
+    printf("=================================\n");
+
+    while (1) {
+
+        showMenu();
+
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        // Exit
+        if (choice == 0) {
+            printf("\nThank you for using Mini Smart Calculator!\n");
+            break;
+        }
+
+        // Show history
+        if (choice == 9) {
+            showHistory(history, historyCount);
+            continue;
+        }
+
+        // Clear history
+        if (choice == 8) {
+            historyCount = 0;
+            printf("\nHistory cleared!\n");
+            continue;
+        }
+
+        // Square
+        if (choice == 7) {
+            printf("\nEnter a number: ");
+            scanf("%lf", &num1);
+
+            result = num1 * num1;
+
+            printf("Result: %.2lf² = %.2lf\n", num1, result);
+
+            if (historyCount < MAX_HISTORY) {
+                snprintf(history[historyCount], 100,
+                         "%.2lf² = %.2lf", num1, result);
+                historyCount++;
+            }
+
+            continue;
+        }
+
+        // Operations that need two numbers
+        if (choice >= 1 && choice <= 6) {
+
+            printf("\nEnter first number: ");
+            scanf("%lf", &num1);
+
+            printf("Enter second number: ");
+            scanf("%lf", &num2);
+
+            switch (choice) {
+
+                case 1:
+                    result = num1 + num2;
+
+                    printf("Result: %.2lf + %.2lf = %.2lf\n",
+                           num1, num2, result);
+
+                    if (historyCount < MAX_HISTORY) {
+                        snprintf(history[historyCount], 100,
+                                 "%.2lf + %.2lf = %.2lf",
+                                 num1, num2, result);
+                        historyCount++;
+                    }
+                    break;
+
+                case 2:
+                    result = num1 - num2;
+
+                    printf("Result: %.2lf - %.2lf = %.2lf\n",
+                           num1, num2, result);
+
+                    if (historyCount < MAX_HISTORY) {
+                        snprintf(history[historyCount], 100,
+                                 "%.2lf - %.2lf = %.2lf",
+                                 num1, num2, result);
+                        historyCount++;
+                    }
+                    break;
+
+                case 3:
+                    result = num1 * num2;
+
+                    printf("Result: %.2lf × %.2lf = %.2lf\n",
+                           num1, num2, result);
+
+                    if (historyCount < MAX_HISTORY) {
+                        snprintf(history[historyCount], 100,
+                                 "%.2lf × %.2lf = %.2lf",
+                                 num1, num2, result);
+                        historyCount++;
+                    }
+                    break;
+
+                case 4:
+                    if (num2 == 0) {
+                        printf("Error: Cannot divide by zero!\n");
+                    } else {
+                        result = num1 / num2;
+
+                        printf("Result: %.2lf ÷ %.2lf = %.2lf\n",
+                               num1, num2, result);
+
+                        if (historyCount < MAX_HISTORY) {
+                            snprintf(history[historyCount], 100,
+                                     "%.2lf ÷ %.2lf = %.2lf",
+                                     num1, num2, result);
+                            historyCount++;
+                        }
+                    }
+                    break;
+
+                case 5:
+                    if ((int)num2 == 0) {
+                        printf("Error: Cannot use zero as divisor!\n");
+                    } else {
+                        remainder = (int)num1 % (int)num2;
+
+                        printf("Result: %d %% %d = %d\n",
+                               (int)num1, (int)num2, remainder);
+
+                        if (historyCount < MAX_HISTORY) {
+                            snprintf(history[historyCount], 100,
+                                     "%d %% %d = %d",
+                                     (int)num1, (int)num2, remainder);
+                            historyCount++;
+                        }
+                    }
+                    break;
+
+                case 6:
+                    result = pow(num1, num2);
+
+                    printf("Result: %.2lf ^ %.2lf = %.2lf\n",
+                           num1, num2, result);
+
+                    if (historyCount < MAX_HISTORY) {
+                        snprintf(history[historyCount], 100,
+                                 "%.2lf ^ %.2lf = %.2lf",
+                                 num1, num2, result);
+                        historyCount++;
+                    }
+                    break;
+            }
+
+        } else {
+            printf("\nInvalid choice! Please select 0-9.\n");
+        }
+    }
+
+    return 0;
+}
+
+// Display calculator menu
+void showMenu() {
+    printf("\n---------------------------------\n");
+    printf("             MENU\n");
+    printf("---------------------------------\n");
+    printf("1. Addition       (+)\n");
+    printf("2. Subtraction    (-)\n");
+    printf("3. Multiplication (*)\n");
+    printf("4. Division       (/)\n");
+    printf("5. Remainder      (%%)\n");
+    printf("6. Power          (^)\n");
+    printf("7. Square         (x²)\n");
+    printf("8. Clear History\n");
+    printf("9. Show History\n");
+    printf("0. Exit\n");
+    printf("---------------------------------\n");
+}
+
+// Display calculation history
+void showHistory(char history[][100], int count) {
+
+    printf("\n========== HISTORY ==========\n");
+
+    if (count == 0) {
+        printf("No calculations yet.\n");
+    } else {
+        for (int i = 0; i < count; i++) {
+            printf("%d. %s\n", i + 1, history[i]);
+        }
+    }
+
+    printf("=============================\n");
+}
